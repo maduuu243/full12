@@ -1,0 +1,43 @@
+name: Durak Online Farm
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * *'  # Запуск каждый день в полночь UTC
+  workflow_dispatch:      # Возможность запустить вручную
+
+jobs:
+  farm:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run Durak Farm with 5 processes
+      env:
+        MAIN_TOKEN: ${{ secrets.MAIN_TOKEN }}
+        BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+      run: |
+        python main.py
+      timeout-minutes: 300
+    
+    - name: Notify on success
+      if: success()
+      run: echo "Durak Online farm completed successfully with 5 processes!"
+    
+    - name: Notify on failure
+      if: failure()
+      run: echo "Durak Online farm failed. Check logs for details."
