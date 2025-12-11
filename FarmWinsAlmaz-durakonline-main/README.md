@@ -44,3 +44,4 @@ pip install requests loguru python-dotenv
 ```bash
 pip install -r requirements.txt
 ```
+# Workflow triggered
