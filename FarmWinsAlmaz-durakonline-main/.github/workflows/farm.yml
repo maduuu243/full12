@@ -1,13 +1,7 @@
 name: Durak Online Farm
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  schedule:
-    - cron: '0 0 * * *'  # Запуск каждый день в полночь UTC
-  workflow_dispatch:      # Возможность запустить вручную
+  workflow_dispatch:      # Запуск только вручную
 
 jobs:
   farm:
